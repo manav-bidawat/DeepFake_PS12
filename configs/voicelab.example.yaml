@@ -1,0 +1,25 @@
+runtime:
+  enable_tts: false
+  host: 0.0.0.0
+  port: 7860
+
+detection:
+  model_a:
+    checkpoint: models/checkpoints/ModelA_LA_bestnew.pt
+    threshold: 0.420
+  model_b:
+    checkpoint: models/checkpoints/ModelB_PA_bestnew.pt
+    threshold: 0.118
+
+generation:
+  xtts_model_path: ""
+  xtts_checkpoint_path: ""
+  xtts_config_path: ""
+  xtts_vocab_path: ""
+
+storage:
+  uploads_dir: webapp/uploads
+  outputs_dir: webapp/outputs
+  temp_dir: webapp/temp
+  cleanup_after_hours: 24
+

@@ -1,0 +1,38 @@
+{
+  "manifest": "data/manifests/pa_eval.csv",
+  "checkpoint": "models/run2/rawnet/best.pt",
+  "threshold_used": 0.2110595703125,
+  "eer": 0.1779421437053416,
+  "accuracy": 0.8085059006902694,
+  "n_samples": 134730,
+  "n_samples_skipped": 0,
+  "preprocessing": {
+    "pre_emphasis": true,
+    "pre_emphasis_coef": 0.97,
+    "trim_silence": true,
+    "feature_extractor": {
+      "name": "RawWaveform",
+      "config": {
+        "sample_rate": 16000,
+        "duration_sec": 4.0
+      }
+    },
+    "spectrogram_normalization": "Raw waveform input"
+  },
+  "confusion_matrix": {
+    "tn": 15441,
+    "fp": 2649,
+    "fn": 23151,
+    "tp": 93489
+  },
+  "class_0_bonafide": {
+    "precision": 0.40010883084577115,
+    "recall": 0.8535655058043118,
+    "f1": 0.5448290462580714
+  },
+  "class_1_spoof": {
+    "precision": 0.972445859077576,
+    "recall": 0.8015174897119342,
+    "f1": 0.8787468629275583
+  }
+}

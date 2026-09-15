@@ -1,0 +1,13 @@
+{
+  "checkpoint": "models/run2/rawnet/best.pt",
+  "model_name": "rawnet",
+  "sample_path": "./PA/PA/ASVspoof2019_PA_eval/flac/PA_E_0000001.flac",
+  "device": "cuda",
+  "cpu_model": "x86_64",
+  "gpu_model": "NVIDIA RTX A5000",
+  "iters": 100,
+  "macs": 8200239040.0,
+  "num_params": 1138666,
+  "latency_ms_mean": 2.2203115199226886,
+  "model_size_mb": 13.128280639648438
+}

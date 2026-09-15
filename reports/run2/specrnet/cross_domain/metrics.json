@@ -1,0 +1,44 @@
+{
+  "manifest": "data/manifests/la_eval.csv",
+  "checkpoint": "models/run2/specrnet/best.pt",
+  "threshold_used": 0.8358460664749146,
+  "eer": 0.3497006792201061,
+  "accuracy": 0.3358226764181535,
+  "n_samples": 71237,
+  "n_samples_skipped": 0,
+  "preprocessing": {
+    "pre_emphasis": true,
+    "pre_emphasis_coef": 0.97,
+    "trim_silence": true,
+    "feature_extractor": {
+      "name": "LFCC",
+      "config": {
+        "sample_rate": 16000,
+        "window_length": 400,
+        "hop_length": 160,
+        "filter_count": 60,
+        "num_ceps": 20,
+        "n_fft": 512,
+        "f_min": 0.0,
+        "f_max": 8000.0
+      }
+    },
+    "spectrogram_normalization": "Per-sample mean/std normalization in LFCC frontend"
+  },
+  "confusion_matrix": {
+    "tn": 7006,
+    "fp": 349,
+    "fn": 46965,
+    "tp": 16917
+  },
+  "class_0_bonafide": {
+    "precision": 0.12981045376220562,
+    "recall": 0.952549286199864,
+    "f1": 0.22848384045918535
+  },
+  "class_1_spoof": {
+    "precision": 0.9797868643576972,
+    "recall": 0.26481638020099557,
+    "f1": 0.4169418839651008
+  }
+}

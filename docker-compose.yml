@@ -1,0 +1,15 @@
+services:
+  voicelab:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./webapp/uploads:/app/webapp/uploads
+      - ./webapp/outputs:/app/webapp/outputs
+      - ./webapp/temp:/app/webapp/temp
+    restart: unless-stopped
+

@@ -1,0 +1,13 @@
+{
+  "checkpoint": "models/run2/specrnet/best.pt",
+  "model_name": "specrnet",
+  "sample_path": "./PA/PA/ASVspoof2019_PA_eval/flac/PA_E_0000001.flac",
+  "device": "cuda",
+  "cpu_model": "x86_64",
+  "gpu_model": "NVIDIA RTX A5000",
+  "iters": 100,
+  "macs": 536367504.0,
+  "num_params": 804771,
+  "latency_ms_mean": 1.6072262404486537,
+  "model_size_mb": 3.1051292419433594
+}

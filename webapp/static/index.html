@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoiceLab</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <i data-lucide="mic"></i>
+        <span>VoiceLab</span>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="new">New Generation</button>
+        <button class="nav-btn" data-view="classifier">Classifier</button>
+        <button class="nav-btn" data-view="history">History</button>
+        <button class="nav-btn" data-view="status">Server Status</button>
+      </nav>
+      <div class="status-mini">
+        <span id="sidebar-dot" class="dot"></span>
+        <span id="sidebar-status">Server unavailable</span>
+        <div id="sidebar-uptime" style="margin-top:6px;">Uptime: --</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section id="view-new" class="view active">
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Step 1 - Upload Reference Voice</h3>
+            <i id="voice-check" class="check" data-lucide="check-circle"></i>
+          </div>
+          <div id="voice-drop" class="dropzone">Drop WAV/MP3 here or click to browse</div>
+          <input id="voice-file-input" type="file" accept="audio/wav,audio/mpeg,.wav,.mp3" hidden />
+          <div id="voice-meta" class="muted" style="margin-top:10px;"></div>
+          <div class="meta-row" id="voice-pills"></div>
+          <audio id="voice-audio" controls style="width:100%; margin-top:10px; display:none;"></audio>
+          <canvas id="voice-wave" width="900" height="80" style="display:none;"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Step 2 - Provide Text</h3>
+            <i id="text-check" class="check" data-lucide="check-circle"></i>
+          </div>
+          <div class="tabs">
+            <button id="tab-type" class="tab-btn active">Type Text</button>
+            <button id="tab-upload" class="tab-btn">Upload Text File</button>
+          </div>
+          <div id="panel-type" class="tab-panel active">
+            <textarea id="text-input" placeholder="Enter the text you want to synthesize..."></textarea>
+            <div id="char-count" class="count">0 characters</div>
+          </div>
+          <div id="panel-upload" class="tab-panel">
+            <div id="text-drop" class="dropzone">Drop .txt here or click to browse</div>
+            <input id="text-file-input" type="file" accept=".txt,text/plain" hidden />
+            <div id="text-preview" class="muted" style="margin-top:10px;"></div>
+            <div class="meta-row" id="text-pills"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Step 3 - Generation Options</h3>
+          </div>
+          <button id="options-toggle" class="collapsible-head">Show options</button>
+          <div id="options-body" class="collapsible-body">
+            <div class="mode-grid">
+              <div class="mode-card active" data-mode="clone">
+                <div style="display:flex;align-items:center;gap:8px;"><i data-lucide="copy"></i><strong>Clone Voice</strong></div>
+                <p class="muted" style="margin-top:8px;">Generate speech in the uploaded voice</p>
+              </div>
+              <div class="mode-card" data-mode="both">
+                <div style="display:flex;align-items:center;gap:8px;"><i data-lucide="sparkles"></i><strong>Both Outputs</strong></div>
+                <p class="muted" style="margin-top:8px;">Clone + voice conversion (requires 10s+ reference)</p>
+              </div>
+            </div>
+            <div class="slider-row">
+              <label for="speed">Speed</label>
+              <input id="speed" type="range" min="0.5" max="2.0" step="0.1" value="1.0" />
+              <span id="speed-val">1.0x</span>
+            </div>
+            <div class="slider-row">
+              <label for="temperature">Temperature</label>
+              <input id="temperature" type="range" min="0.1" max="1.0" step="0.05" value="0.7" />
+              <span id="temp-val">0.70</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Step 4 - Generate</h3>
+          </div>
+          <button id="generate-btn" class="generate-btn" title="Upload voice and provide text first">
+            <span class="spinner" id="generate-spinner"></span>
+            <i data-lucide="wand-sparkles"></i>
+            <span id="generate-label">Generate Voice</span>
+          </button>
+        </div>
+
+        <div class="card" id="results-panel" style="display:none;">
+          <div class="step-header">
+            <h3 class="step-title">Step 5 - Results</h3>
+          </div>
+          <div id="results-grid" class="results-grid"></div>
+        </div>
+      </section>
+
+      <section id="view-history" class="view">
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Recent Jobs</h3>
+          </div>
+          <div class="history-controls">
+            <button id="clear-history" class="small-btn">Clear History (cleanup)</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Speaker File</th>
+                <th>Text Preview</th>
+                <th>Outputs</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="jobs-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-classifier" class="view">
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Voice Authenticity Classifier</h3>
+          </div>
+          <p class="muted" style="margin-bottom:12px;">Upload a voice sample.</p>
+          <div id="classify-drop" class="dropzone">Drop WAV/MP3 here or click to browse</div>
+          <input id="classify-file-input" type="file" accept="audio/wav,audio/mpeg,.wav,.mp3" hidden />
+          <div id="classify-meta" class="muted" style="margin-top:10px;"></div>
+          <audio id="classify-audio" controls style="width:100%; margin-top:10px; display:none;"></audio>
+          <canvas id="classify-wave" width="900" height="80" style="display:none;"></canvas>
+          <button id="classify-btn" class="generate-btn" style="margin-top:12px;" disabled>
+            <i data-lucide="shield-check"></i>
+            <span id="classify-btn-label">Classify Voice</span>
+          </button>
+        </div>
+
+        <div class="card" id="classify-result-card" style="display:none;">
+          <div class="step-header">
+            <h3 class="step-title">Classification Result</h3>
+          </div>
+          <div id="classify-result-body"></div>
+        </div>
+
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Recent Classifications</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>File</th>
+                <th>Model A</th>
+                <th>Model B</th>
+                <th>A Score/Conf</th>
+                <th>B Score/Conf</th>
+              </tr>
+            </thead>
+            <tbody id="classify-history-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="view-status" class="view">
+        <div class="card">
+          <div class="step-header">
+            <h3 class="step-title">Server Health</h3>
+          </div>
+          <div class="status-grid">
+            <div class="card" style="margin:0;">
+              <h4>Model</h4>
+              <p id="status-model" class="muted">--</p>
+            </div>
+            <div class="card" style="margin:0;">
+              <h4>GPU Memory</h4>
+              <p id="gpu-text" class="muted">--</p>
+              <div class="progress"><span id="gpu-bar"></span></div>
+            </div>
+            <div class="card" style="margin:0;">
+              <h4>Uptime</h4>
+              <p id="status-uptime" class="muted">--</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toasts" class="toasts"></div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

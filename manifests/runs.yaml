@@ -1,0 +1,12 @@
+run1:
+  description: Train/validate on Set A (LA), evaluate on LA (in-domain) and PA (cross-domain)
+  train_manifest: data/manifests/la_train.csv
+  val_manifest: data/manifests/la_dev.csv
+  test_in_manifest: data/manifests/la_eval.csv
+  test_cross_manifest: data/manifests/pa_eval.csv
+run2:
+  description: Train/validate on Set B (PA), evaluate on PA (in-domain) and LA (cross-domain)
+  train_manifest: data/manifests/pa_train.csv
+  val_manifest: data/manifests/pa_dev.csv
+  test_in_manifest: data/manifests/pa_eval.csv
+  test_cross_manifest: data/manifests/la_eval.csv

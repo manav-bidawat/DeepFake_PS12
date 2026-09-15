@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Runtime web artifacts
+webapp/uploads/*
+webapp/outputs/*
+webapp/temp/*
+webapp/cleanup.log
+!webapp/uploads/.gitkeep
+!webapp/outputs/.gitkeep
+!webapp/temp/.gitkeep
+
+# Datasets and generated research artifacts
+LA/
+PA/
+DL1/
+data/precomputed_tensors/
+data/audio/
+generated/
+processed/
+processed.zip
+*.zip
+
+# Large model artifacts. Keep the small AASIST production checkpoints explicitly.
+models/**/*.pt
+models/**/*.pth
+models/**/*.ckpt
+models/**/*.onnx
+models/**/*.safetensors
+!models/checkpoints/ModelA_LA_bestnew.pt
+!models/checkpoints/ModelB_PA_bestnew.pt
+experiments/
+
+# Local tooling/cache leftovers
+.pip-cache/
+.pip-tmp/
+.tmp/
+rclone-*/
+rclone-*.zip
+=*
+
